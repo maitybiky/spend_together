@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 const Mian = () => {
   const loc = useLocation();
-  console.log("loc", loc);
+
   const bg_varient = [
     "alert-primary",
     "alert-secondary",
@@ -16,6 +16,18 @@ const Mian = () => {
     "alert-dark",
     "alert-success",
   ];
+  const text = ` Expense Buddy: Effortlessly Split Bills and Settle Payments with Ease!`;
+  const [typeText, setTypimgText] = useState("");
+  useEffect(() => {
+    const typeInterVel = setInterval(() => {
+      setTypimgText((prev) => prev + text.charAt(prev.length));
+    }, 50);
+
+    return () => {
+      clearInterval(typeInterVel);
+    };
+  }, []);
+
   const [user, setUser] = useState(
     loc.state
       ? loc.state.user
@@ -27,9 +39,7 @@ const Mian = () => {
         ]
   );
   const [total, setTotal] = useState(0);
-  const [final, setFinal] = useState(
-    loc.state ? loc.state.arr : []
-  );
+  const [final, setFinal] = useState(loc.state ? loc.state.arr : []);
   const adduser = () => {
     let data = {
       name: "",
@@ -117,19 +127,17 @@ const Mian = () => {
         </Link>
       </div>
       <div className="row">
-        <h6>
-          Expense Buddy: Effortlessly Split Bills and Settle Payments with Ease!
-        </h6>
+        <h6>{typeText}</h6>
       </div>
       <div className="row my-2">
         <div className="col">Name</div>
         <div className="col">Amount</div>
       </div>
       {user.map((it, ind) => (
-        <div className="row my-2">
+        <div className="fadeInItem row my-2">
           <div className="col">
             <input
-            defaultValue={it.name}
+              defaultValue={it.name}
               onBlur={(e) => {
                 setUser((prev) => {
                   let arr = [...prev];
@@ -144,7 +152,7 @@ const Mian = () => {
           </div>
           <div className="col">
             <input
-            defaultValue={it.money}
+              defaultValue={it.money}
               onChange={(e) => {
                 setUser((prev) => {
                   let arr = [...prev];
@@ -165,12 +173,16 @@ const Mian = () => {
       <button className="btn btn-info m-2" onClick={calculate}>
         Calculate
       </button>
-      <h3 className="m-2">Total : {total}</h3>
+      <h3 className="m-2">Total : 💰 {total}</h3>
 
-      {final.map((it) => (
-        <div className={`alert ${it.varirent}`} role="alert">
+      {final.map((it, ind) => (
+        <div
+          data-prefix={ind * 0.5}
+          className={`alert ${it.varirent} fadeInItem`}
+          role="alert"
+        >
           <span className="text-danger mx-2">{it.rel[0]}</span>will pay
-          <span className="text-success mx-2">{it.rel[1]}</span> $
+          <span className="text-success mx-2">{it.rel[1]}</span> 💰
           {-1 * it.amount.toFixed(2)}
         </div>
       ))}

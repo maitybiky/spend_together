@@ -3,6 +3,7 @@ import "./App.css";
 import Mian from "./Comp/Mian";
 import History from "./Comp/History";
 import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 function App() {
   return (
     <>
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route element={<Mian />} path="/" />
           <Route element={<History />} path="history" />
+          
         </Routes>
       </Router>
     </>

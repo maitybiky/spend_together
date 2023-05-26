@@ -1,50 +1,70 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 const History = ({ page }) => {
   const [record, setRecord] = useState(() => {
     let history = reactLocalStorage.get("history");
     if (history) {
-      return JSON.parse(history);
+      let pr = JSON.parse(history);
+
+      return pr.history.reverse();
     }
     return [];
   });
+  const text = `    Note : clearing browser history or using in incognito tab does store
+  history for next visit`;
+  const [typeingText, setTypimgText] = useState("");
+  useEffect(() => {
+    const typeInterVel = setInterval(() => {
+      setTypimgText((prev) => prev + text.charAt(prev.length));
+    }, 10);
+
+    return () => {
+      clearInterval(typeInterVel);
+    };
+  }, []);
+
   useEffect(() => {
     setRecord(() => {
       let history = reactLocalStorage.get("history");
       if (history) {
-        return JSON.parse(history);
+        let pr = JSON.parse(history);
+        console.log("pr", pr);
+        return pr.history.reverse();
       }
       return [];
     });
   }, [page]);
   console.log("record", record);
   const navi = useNavigate();
+
   return (
     <div className="container">
-      <div className="row">
+      <div className="row  ">
         <h6>History</h6>
-        <p>
-          Note : clearing browser history or using in incognito tab does store
-          history for next visit
+        <Link to="/">Home</Link>
+        <p style={{textAlign:"left"}} className="">
+          {Array.from(typeingText).map((it) => (
+            <span className="animated-text">{it}</span>
+          ))}
+          <span className="blinking">|</span>
         </p>
       </div>
       <ul className="list-group">
-        {record.history?.reverse().map((item) => {
+        {record?.map((item) => {
           let user = item?.user?.map((it) => {
             return it.name;
           });
           return (
             <li
               onClick={() => navi("/", { state: item })}
-              className="list-group-item m-2 d-flex justify-content-between align-items-center"
+              className="list-group-item text-center m-2 d-flex justify-content-center align-items-center"
             >
               {moment(item.time).format("lll")}
-             <br/>
+              <br />
               {user.join(",")}
-            
-              
             </li>
           );
         })}
