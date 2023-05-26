@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
+import del from "../../public/times-circle.svg";
 const History = ({ page }) => {
   const [record, setRecord] = useState(() => {
     let history = reactLocalStorage.get("history");
@@ -18,7 +19,7 @@ const History = ({ page }) => {
   const [typeingText, setTypimgText] = useState("");
   useEffect(() => {
     const typeInterVel = setInterval(() => {
-      if ((typeingText.length === text.length)) {
+      if (typeingText.length === text.length) {
         clearInterval(typeInterVel);
       }
       setTypimgText((prev) => prev + text.charAt(prev.length));
@@ -40,9 +41,26 @@ const History = ({ page }) => {
       return [];
     });
   }, [page]);
-  console.log("record", record);
-  const navi = useNavigate();
 
+  const navi = useNavigate();
+  const hamdledel = (ind) => {
+    console.log("first");
+    setRecord((prev) => {
+      let n = [...prev];
+      n.splice(ind, 1);
+      let his = reactLocalStorage.get("history");
+      if (his) {
+        let parsed = JSON.parse(his);
+        console.log("his", parsed);
+        let newRecord = [...n];
+        reactLocalStorage.set(
+          "history",
+          JSON.stringify({ history: newRecord })
+        );
+      }
+      return n;
+    });
+  };
   return (
     <div className="container">
       <div className="row  ">
@@ -54,19 +72,32 @@ const History = ({ page }) => {
         </p>
       </div>
       <ul className="list-group">
-        {record?.map((item) => {
+        {record?.map((item, ind) => {
           let user = item?.user?.map((it) => {
             return it.name;
           });
           return (
-            <li
-              onClick={() => navi("/", { state: item })}
-              className="list-group-item text-center m-2 d-flex justify-content-center align-items-center"
-            >
-              {moment(item.time).format("lll")}
-              <br />
-              {user.join(",")}
-            </li>
+            <>
+              <li
+                key={ind}
+                onClick={() => navi("/", { state: item })}
+                className="list-group-item text-center m-2 d-flex justify-content-center align-items-center"
+              >
+                {moment(item.time).format("lll")}
+                <br />
+                {user.join(",")}
+
+                <i
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    hamdledel(ind);
+                  }}
+                  style={{ marginLeft: "25px", color: "red",height:30,width:30 }}
+                  className="fa fa-times "
+                  aria-hidden="true"
+                />
+              </li>
+            </>
           );
         })}
       </ul>

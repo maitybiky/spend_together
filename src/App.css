@@ -57,6 +57,8 @@ input {
 .list-group-item {
   transition: 0.5s;
   border-radius: 10px;
+  padding-right: 2px;
+  border-left:10px solid black ;
 }
 .list-group-item:hover {
   background: rgb(255, 116, 116) !important;
