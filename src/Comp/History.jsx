@@ -18,8 +18,11 @@ const History = ({ page }) => {
   const [typeingText, setTypimgText] = useState("");
   useEffect(() => {
     const typeInterVel = setInterval(() => {
+      if ((typeingText.length === text.length)) {
+        clearInterval(typeInterVel);
+      }
       setTypimgText((prev) => prev + text.charAt(prev.length));
-    }, 10);
+    }, 50);
 
     return () => {
       clearInterval(typeInterVel);
@@ -44,11 +47,9 @@ const History = ({ page }) => {
     <div className="container">
       <div className="row  ">
         <h6>History</h6>
-        <Link to="/">Home</Link>
-        <p style={{textAlign:"left"}} className="">
-          {Array.from(typeingText).map((it) => (
-            <span className="animated-text">{it}</span>
-          ))}
+        <Link to="/">+ New Tab</Link>
+        <p style={{ textAlign: "left" }} className="">
+          {typeingText}
           <span className="blinking">|</span>
         </p>
       </div>

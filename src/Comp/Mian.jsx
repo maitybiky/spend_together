@@ -20,6 +20,9 @@ const Mian = () => {
   const [typeText, setTypimgText] = useState("");
   useEffect(() => {
     const typeInterVel = setInterval(() => {
+      if (typeText.length === text.length) {
+        clearInterval(typeInterVel);
+      }
       setTypimgText((prev) => prev + text.charAt(prev.length));
     }, 50);
 
@@ -48,6 +51,10 @@ const Mian = () => {
     setUser((prev) => [...prev, data]);
   };
   const calculate = () => {
+    let valid = user.every((it) => it.name);
+    if (!valid) {
+      return;
+    }
     let divide = user.map((it) => ({ ...it, cntrb: it.money / user.length }));
     let dashboard = [];
     divide.forEach((left, lind) => {
@@ -122,12 +129,17 @@ const Mian = () => {
   return (
     <div className="container">
       <div className="row mb-5">
-        <Link to="/history" className="btn">
+        <Link to="/history" className="btn lnk">
           History
         </Link>
       </div>
       <div className="row">
-        <h6>{typeText}</h6>
+        <h6>
+          {typeText}
+          <span style={{ color: "#553c9a" }} className="blinking">
+            _
+          </span>
+        </h6>
       </div>
       <div className="row my-2">
         <div className="col">Name</div>

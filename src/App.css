@@ -4,16 +4,17 @@
   padding: 2rem;
   text-align: center;
 }
-input{
+input {
   border: 2px solid black;
 }
-.row  h6 {
+.row h6 {
   background-image: linear-gradient(to left, #553c9a, #b393d3);
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
   margin-bottom: 50px;
 }
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -50,14 +51,14 @@ input{
   color: #888;
 }
 
-.btn-light:hover{
+.btn-light:hover {
   background: rgb(0, 255, 200);
 }
-.list-group-item{
+.list-group-item {
   transition: 0.5s;
   border-radius: 10px;
 }
-.list-group-item:hover{
+.list-group-item:hover {
   background: rgb(255, 116, 116) !important;
   cursor: pointer;
   color: white;
@@ -68,26 +69,48 @@ input{
 }
 
 @keyframes blink-animation {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes text-animation {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animated-text {
   animation: text-animation 200ms ease forwards;
 }
 
-
 @keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fadeInItem {
   animation: fadeIn 0.5s ease forwards;
+}
+
+.lnk:hover{
+  filter: opacity(1) !important;
+  color: #553c9a;
 }
