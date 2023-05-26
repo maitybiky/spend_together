@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+.row  h6 {
+  background-image: linear-gradient(to left, #553c9a, #b393d3);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  margin-bottom: 50px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -39,4 +46,8 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.btn-light:hover{
+  background: rgb(0, 255, 200);
 }
