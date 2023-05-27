@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
-import del from "../../public/times-circle.svg";
+
 const History = ({ page }) => {
   const [record, setRecord] = useState(() => {
     let history = reactLocalStorage.get("history");
@@ -81,18 +81,27 @@ const History = ({ page }) => {
               <li
                 key={ind}
                 onClick={() => navi("/", { state: item })}
-                className="list-group-item text-center m-2 d-flex justify-content-center align-items-center"
+                className="list-group-item text-center m-2  d-flex justify-content-center align-items-center"
               >
-                {moment(item.time).format("lll")}
-                <br />
-                {user.join(",")}
+                <div className="flex-column d-flex">
+                  {item?.name} {" "} {moment(item.time).format("hh:mm A")}
+                  <br/>
+                  {moment(item.time).fromNow()}
+                  <br />
+                  <span>{user.join(",").slice(0,10)}...</span>
+                </div>
 
                 <i
                   onClick={(e) => {
                     e.stopPropagation();
                     hamdledel(ind);
                   }}
-                  style={{ marginLeft: "25px", color: "red",height:30,width:30 }}
+                  style={{
+                    marginLeft: "25px",
+                    color: "red",
+                    height: 30,
+                    width: 30,
+                  }}
                   className="fa fa-times "
                   aria-hidden="true"
                 />

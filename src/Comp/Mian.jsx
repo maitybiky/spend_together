@@ -1,10 +1,12 @@
 import moment from "moment";
 import React from "react";
+import { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 const Mian = () => {
   const loc = useLocation();
+  const sessionNameRef = useRef();
 
   const bg_varient = [
     "alert-primary",
@@ -106,9 +108,16 @@ const Mian = () => {
     setFinal(reduce);
     handleHistory(reduce);
   };
+  const [btnDisable, setBtnDisable] = useState(true);
   useEffect(() => {
     let ttl = user.reduce((prev, nxt) => prev + Number(nxt.money), 0);
     setTotal(ttl);
+    let canCalculate = user.every((it) => it.name);
+    if (canCalculate && user.length > 1) {
+      setBtnDisable(false);
+    } else {
+      setBtnDisable(true);
+    }
   }, [user]);
   const handleHistory = (arr) => {
     let his = reactLocalStorage.get("history");
@@ -116,16 +125,24 @@ const Mian = () => {
     if (his) {
       let parsed = JSON.parse(his);
       console.log("his", parsed);
-      let newRecord = [...parsed.history, { arr, user, time: moment() }];
+      let newRecord = [
+        ...parsed.history,
+        { arr, user, time: moment(), name: sessionNameRef.current.value },
+      ];
       console.log("newRecord", newRecord);
       reactLocalStorage.set("history", JSON.stringify({ history: newRecord }));
     } else {
       reactLocalStorage.set(
         "history",
-        JSON.stringify({ history: [{ arr, user, time: moment() }] })
+        JSON.stringify({
+          history: [
+            { arr, user, time: moment(), name: sessionNameRef.current.value },
+          ],
+        })
       );
     }
   };
+
   return (
     <div className="container">
       <div className="row mb-5">
@@ -141,10 +158,27 @@ const Mian = () => {
           </span>
         </h6>
       </div>
+      <div className="fadeInItem row my-2">
+        <div className="col">
+          <input
+            ref={sessionNameRef}
+            defaultValue={loc.state.name??moment().format("dddd")}
+            onChange={(e) => {
+              sessionNameRef.current.value = e.target.value;
+            }}
+            // defaultValue={it.name}
+            placeholder="Enter Name of This session"
+            type="text"
+            className="form-control"
+            aria-label="name-of-session"
+          />
+        </div>
+      </div>
       <div className="row my-2">
         <div className="col">Name</div>
         <div className="col">Amount</div>
       </div>
+
       {user.map((it, ind) => (
         <div className="fadeInItem row my-2">
           <div className="col">
@@ -182,10 +216,15 @@ const Mian = () => {
       <button className="btn btn-light m-2" onClick={adduser}>
         add user
       </button>
-      <button className="btn btn-info m-2" onClick={calculate}>
+      <button
+        disabled={btnDisable}
+        className="btn btn-info m-2"
+        onClick={calculate}
+      >
         Calculate
       </button>
       <h3 className="m-2">Total : 💰 {total}</h3>
+      <h6 className="m-2">Each : 💰 {(total / user.length).toFixed(2)}</h6>
 
       {final.map((it, ind) => (
         <div
