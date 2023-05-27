@@ -162,7 +162,7 @@ const Mian = () => {
         <div className="col">
           <input
             ref={sessionNameRef}
-            defaultValue={loc.state.name??moment().format("dddd")}
+            defaultValue={loc.state?.name??moment().format("dddd")}
             onChange={(e) => {
               sessionNameRef.current.value = e.target.value;
             }}
