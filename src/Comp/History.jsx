@@ -14,10 +14,15 @@ const History = ({ page }) => {
     }
     return [];
   });
+  const [textToggle, setTextToggle] = useState(true);
+
   const text = `    Note : clearing browser history or using in incognito tab does store
   history for next visit`;
   const [typeingText, setTypimgText] = useState("");
   useEffect(() => {
+    const toogleInterVal = setInterval(() => {
+      setTextToggle((prev) => !prev);
+    }, 3000);
     const typeInterVel = setInterval(() => {
       if (typeingText.length === text.length) {
         clearInterval(typeInterVel);
@@ -27,6 +32,7 @@ const History = ({ page }) => {
 
     return () => {
       clearInterval(typeInterVel);
+      clearInterval(toogleInterVal);
     };
   }, []);
 
@@ -35,7 +41,7 @@ const History = ({ page }) => {
       let history = reactLocalStorage.get("history");
       if (history) {
         let pr = JSON.parse(history);
-        console.log("pr", pr);
+        // console.log("pr", pr);
         return pr.history.reverse();
       }
       return [];
@@ -44,14 +50,14 @@ const History = ({ page }) => {
 
   const navi = useNavigate();
   const hamdledel = (ind) => {
-    console.log("first");
+    // console.log("first");
     setRecord((prev) => {
       let n = [...prev];
       n.splice(ind, 1);
       let his = reactLocalStorage.get("history");
       if (his) {
         let parsed = JSON.parse(his);
-        console.log("his", parsed);
+        // console.log("his", parsed);
         let newRecord = [...n];
         reactLocalStorage.set(
           "history",
@@ -78,19 +84,19 @@ const History = ({ page }) => {
           });
           return (
             <>
-              <li
-                key={ind}
-                onClick={() => navi("/", { state: item })}
-                className="list-group-item text-center m-2  d-flex justify-content-center align-items-center"
-              >
-                <div className="flex-column d-flex">
-                  {item?.name} {" "} {moment(item.time).format("hh:mm A")}
-                  <br/>
-                  {moment(item.time).fromNow()}
-                  <br />
-                  <span>{user.join(",").slice(0,10)}...</span>
-                </div>
-
+              <div onClick={() => navi("/", { state: item })}>
+                <button className="btn btn-warning"> {item?.name}</button>{" "}
+                {/* <span> {moment(item.time).format("hh:mm A")}</span> */}
+                <button
+                  style={{ fontWeight: 900, backgroundColor: "#ff0018" }}
+                  type="button"
+                  class="btn  text-light btn-danger"
+                >
+                  {textToggle
+                    ? moment(item.time).fromNow()
+                    : `${user.join(",").slice(0, 15)}...`}
+                 
+                </button>
                 <i
                   onClick={(e) => {
                     e.stopPropagation();
@@ -105,7 +111,7 @@ const History = ({ page }) => {
                   className="fa fa-times "
                   aria-hidden="true"
                 />
-              </li>
+              </div>
             </>
           );
         })}

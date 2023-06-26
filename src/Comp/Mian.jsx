@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
+import ModalComp from "./Modal";
 const Mian = () => {
   const loc = useLocation();
   const sessionNameRef = useRef();
@@ -18,7 +19,7 @@ const Mian = () => {
     "alert-dark",
     "alert-success",
   ];
-  const text = ` Expense Buddy: Effortlessly Split Bills and Settle Payments with Ease!`;
+  const text = ` Spend Together: Effortlessly Split Bills and Settle Payments with Ease!`;
   const [typeText, setTypimgText] = useState("");
   useEffect(() => {
     const typeInterVel = setInterval(() => {
@@ -124,12 +125,12 @@ const Mian = () => {
 
     if (his) {
       let parsed = JSON.parse(his);
-      console.log("his", parsed);
+      // console.log("his", parsed);
       let newRecord = [
         ...parsed.history,
         { arr, user, time: moment(), name: sessionNameRef.current.value },
       ];
-      console.log("newRecord", newRecord);
+      // console.log("newRecord", newRecord);
       reactLocalStorage.set("history", JSON.stringify({ history: newRecord }));
     } else {
       reactLocalStorage.set(
@@ -142,9 +143,12 @@ const Mian = () => {
       );
     }
   };
-
+  const setName = (e) => {
+    sessionNameRef.current.value = e.target.value;
+  };
   return (
     <div className="container">
+      <ModalComp setName={setName} />
       <div className="row mb-5">
         <Link to="/history" className="btn lnk">
           History
@@ -162,14 +166,14 @@ const Mian = () => {
         <div className="col">
           <input
             ref={sessionNameRef}
-            defaultValue={loc.state?.name??moment().format("dddd")}
+            defaultValue={loc.state?.name ?? moment().format("dddd")}
             onChange={(e) => {
-              sessionNameRef.current.value = e.target.value;
+              setName(e);
             }}
             // defaultValue={it.name}
             placeholder="Enter Name of This session"
             type="text"
-            className="form-control"
+            className="form-control text-center"
             aria-label="name-of-session"
           />
         </div>
