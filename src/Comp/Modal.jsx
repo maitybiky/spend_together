@@ -11,11 +11,11 @@ const customStyles = {
   },
 };
 
-const ModalComp = ({ setName }) => {
+const ModalComp = ({ setName, shouldOpen }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   let subtitle;
   useEffect(() => {
-    openModal();
+    if (shouldOpen) openModal();
   }, []);
 
   function openModal() {

@@ -148,7 +148,7 @@ const Mian = () => {
   };
   return (
     <div className="container">
-      <ModalComp setName={setName} />
+      <ModalComp shouldOpen={!loc.state} setName={setName} />
       <div className="row mb-5">
         <Link to="/history" className="btn lnk">
           History
@@ -166,7 +166,7 @@ const Mian = () => {
         <div className="col">
           <input
             ref={sessionNameRef}
-            defaultValue={loc.state?.name ?? moment().format("dddd")}
+            defaultValue={loc.state?.name ??`${ moment().format("dddd mm")}`}
             onChange={(e) => {
               setName(e);
             }}
@@ -202,7 +202,7 @@ const Mian = () => {
           </div>
           <div className="col">
             <input
-              defaultValue={it.money}
+              defaultValue={it.money===0??null}
               onChange={(e) => {
                 setUser((prev) => {
                   let arr = [...prev];
