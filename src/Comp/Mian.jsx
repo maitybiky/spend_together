@@ -59,6 +59,7 @@ const Mian = () => {
       return;
     }
     let divide = user.map((it) => ({ ...it, cntrb: it.money / user.length }));
+    console.log('divide', divide)
     let dashboard = [];
     divide.forEach((left, lind) => {
       divide.forEach((right, rind) => {
@@ -73,6 +74,7 @@ const Mian = () => {
         }
       });
     });
+    console.log('dashboard', dashboard)
     let reduce = dashboard.reduce(
       (prev, curr, ind, arr) => {
         if (prev[ind].rel[0] === curr.rel[0]) {
@@ -82,7 +84,6 @@ const Mian = () => {
               ...curr,
               index: prev[ind].index,
               varirent: prev[ind].varirent,
-              name: curr.rel[0],
             },
           ];
         }
@@ -92,19 +93,18 @@ const Mian = () => {
             ...curr,
             index: prev[ind].index + 1,
             varirent: bg_varient[prev[ind].index + 1],
-            name: curr.rel[0],
           },
         ];
       },
       [
         {
-          name: dashboard[0].rel[0],
           ...dashboard[0],
           index: 0,
           varirent: bg_varient[0],
         },
       ]
     );
+    console.log('reduce', reduce)
     reduce.shift();
     setFinal(reduce);
     handleHistory(reduce);
@@ -146,6 +146,7 @@ const Mian = () => {
   const setName = (e) => {
     sessionNameRef.current.value = e.target.value;
   };
+  console.log('user', user)
   return (
     <div className="container">
       <ModalComp shouldOpen={!loc.state} setName={setName} />
@@ -202,7 +203,7 @@ const Mian = () => {
           </div>
           <div className="col">
             <input
-              defaultValue={it.money===0??null}
+              defaultValue={it.money==0?null:Number(it.money)}
               onChange={(e) => {
                 setUser((prev) => {
                   let arr = [...prev];
